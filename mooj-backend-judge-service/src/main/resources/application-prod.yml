@@ -1,0 +1,74 @@
+# 公共配置文件
+# @author yumo
+#
+spring:
+  application:
+    name: mooj-backend-judge-service
+  jackson:
+    date-format: "yyyy-MM-dd HH:mm:ss"
+    serialization:
+      write-dates-as-timestamps: false
+  # session 配置
+  session:
+    store-type: redis
+    # 30 天过期
+    timeout: 2592000
+  # 数据库配置
+  # todo 需替换配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://mysql:3306/mooj
+    username: root
+    password: 123456
+  # Redis 配置
+  # todo 需替换配置，然后取消注释
+  redis:
+    database: 3
+    host: redis
+    port: 6379
+    timeout: 5000
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+    listener:
+      simple:
+        acknowledge-mode: manual
+    publisher-confirm-type: correlated
+    publisher-returns: true
+  # 文件上传
+  servlet:
+    multipart:
+      # 大小限制
+      max-file-size: 10MB
+  # nacos注册中心
+  cloud:
+    nacos:
+      discovery:
+        server-addr: nacos:8848
+server:
+  address: 0.0.0.0
+  port: 8104
+  servlet:
+    context-path: /api/judge
+    # cookie 30 天过期
+    session:
+      cookie:
+        max-age: 2592000
+        path: /api
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: false
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      logic-delete-field: isDelete # 全局逻辑删除的实体字段名
+      logic-delete-value: 1 # 逻辑已删除值（默认为 1）
+      logic-not-delete-value: 0 # 逻辑未删除值（默认为 0）
+# 代码沙箱配置
+codesandbox:
+  type: remote
+knife4j:
+  enable: true
