@@ -1,0 +1,54 @@
+version: '3'
+services:
+  mooj-backend-gateway:
+    container_name: mooj-backend-gateway
+    build:
+      context: ./mooj-backend-gateway
+      dockerfile: Dockerfile
+    ports:
+      - "8101:8101"
+    networks:
+      - mynetwork
+
+  mooj-backend-user-service:
+    container_name: mooj-backend-user-service
+    build:
+      context: ./mooj-backend-user-service
+      dockerfile: Dockerfile
+    ports:
+      - "8102:8102"
+    networks:
+      - mynetwork
+    depends_on:
+      - mooj-backend-gateway
+
+  mooj-backend-question-service:
+    container_name: mooj-backend-question-service
+    build:
+      context: ./mooj-backend-question-service
+      dockerfile: Dockerfile
+    ports:
+      - "8103:8103"
+    networks:
+      - mynetwork
+    depends_on:
+      - mooj-backend-user-service
+      - mooj-backend-gateway
+
+  mooj-backend-judge-service:
+    container_name: mooj-backend-judge-service
+    build:
+      context: ./mooj-backend-judge-service
+      dockerfile: Dockerfile
+    ports:
+      - "8104:8104"
+    networks:
+      - mynetwork
+    depends_on:
+      - mooj-backend-user-service
+      - mooj-backend-question-service
+      - mooj-backend-gateway
+
+# 网络，不定义的话就是默认网络
+networks:
+  mynetwork:
